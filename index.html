@@ -4,16 +4,17 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+        <title>ZSH Expansion</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+		<meta name="description" content="ZSH Expansion is a capable search tool in the right hands">
+		<meta name="author" content="Matthew Franglen">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="css/custom.css">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -35,307 +36,207 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>HTML Presentations Made Easy</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
+                <section>
+                    <h1>ZSH Expansion</h1>
+                    <h3>Make finding files easy</h3>
+                    <p><small>Created by Matthew Franglen</small></p>
+                </section>
 
-				<section>
-					<h2>Heads Up</h2>
-					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
-					</p>
+                <section>
+                    <section>
+                        <h2>What's the problem?</h2>
+                        <p>Bash has pattern expansion<p>
+                        <p class="fragment">except you can't search all folders...</p>
+                        <p class="fragment">and you can't exclude files from the results...</p>
+                        <p class="fragment">and you can't match by file attributes.</p>
+                    </section>
+                    <section>
+                        <h3>ZSH Expansion can do all that</h3>
+                        <p>In Bash, you end up using the find command.</p>
+                        <p>In ZSH, you don't have to!</p>
+                    </section>
+                </section>
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
+                <section>
+                    <section>
+                        <h2>Basic Matching</h2>
+                        <p><strong>*</strong> will match any file or folder</p>
+                        <p><strong>?</strong> will match any single letter</p>
+                        <p><strong>[abc]</strong> will match any letter in the list</p>
+                    </section>
+                    <section>
+                        <h2>Recursive Matching</h2>
+                        <p><strong>**/</strong> will match any contained folder</p>
+                        <pre><code contenteditable>
+% ls -d **/
+css/        css/shaders/  css/theme/source/    js/   lib/css/   ...
+css/print/  css/theme/    css/theme/template/  lib/  lib/font/  ...
+                        </code></pre>
+                        <p><small>It really matches zero or more folders</small></p>
+                    </section>
+                </section>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
-				</section>
+                <section>
+                    <section>
+                        <h2>Exclusion</h2>
+                        <p><strong>PATTERN~EXCLUSION</strong></p>
+                        <p>Anything matching the exclusion will not be returned</p>
+                        <pre><code contenteditable>
+% ls **/*.css~css/**/*.css
+css/print/paper.css  css/print/pdf.css
+css/reveal.css       css/reveal.min.css
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Exclude Results Not Folders</h2>
+                        <p>It just removes the individual excluded paths from the result</p>
+                    </section>
+                    <section>
+                        <h2>Multiple Exclusions Work</h2>
+                        <p>Just apply them one after the other</p>
+                        <pre><code contenteditable>
+% ls **/*.js~plugin/**/*.js~lib/**/*.js
+grunt.js  js/reveal.js  js/reveal.min.js
+                        </code></pre>
+                    </section>
+                </section>
 
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview. Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
+                <section>
+                    <section>
+                        <h2>File Attributes</h2>
+                        <p><strong>PATTERN<span class="grey">~EXCLUSION</span>(ATTRIBUTES)</strong></p>
+                        <p>Allows you to restrict the match by things other than filename</p>
+                    </section>
+                    <section>
+                        <h2>File Type</h2>
+                        <p><strong>.</strong> will match only files</p>
+                        <p><strong>/</strong> will match only directories</p>
+                        <p><strong>@</strong> will match only symlinks</p>
+                        <p><strong>^</strong> will reverse the match</p>
+                        <pre><code contenteditable>
+% ls *(.)
+grunt.js  index.html  LICENSE  package.json  README.md
 
-				<section>
-					<h2>rvl.io</h2>
-					<p>
-						If you don't like writing slides in HTML you can use the online editor <a href="http://www.rvl.io" target="_blank">rvl.io</a>.
-					</p>
-				</section>
+% ls -d *(^.)
+css  js  lib  plugin
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Lots More!</h2>
+                        <p>You can match by file permissions...</p>
+                        <p>You can match by owner...</p>
+                        <p>You can match by modification date...</p>
+                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> for more!</p>
+                    </section>
+                </section>
 
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
+                <section>
+                    <section>
+                        <h2>Result Alteration</h2>
+                        <p><strong>PATTERN<span class="grey">~EXCLUSION</span>(<span class="grey">ATTRIBUTES</span>&nbsp;ALTERATIONS)</strong></p>
+                        <p>Allows you to alter the results to match your desired use</p>
+                    </section>
+                    <section>
+                        <h2>Path Parts</h2>
+                        <p><strong>:t</strong> will remove the leading directories from the path</p>
+                        <p><strong>:h</strong> will remove the last file or directory from the path</p>
+                        <p><strong>:e</strong> will remove everything but the file extension</p>
+                        <p><strong>:r</strong> will remove the file extension</p>
+                        <pre><code contenteditable>
+% echo index.html(:t) index.html(:h) index.html(:e) index.html(:r)
+index.html . html index
 
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
+% echo css/print/paper.css(:t:r)
+paper
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Substitution</h2>
+                        <p><strong>:s#<span class="grey">FIND</span>#<span class="grey">REPLACE</span>#</strong> will replace the first match</p>
+                        <p><strong>:gs#<span class="grey">FIND</span>#<span class="grey">REPLACE</span>#</strong> will replace all matches</p>
+                        <pre><code contenteditable>
+% echo css/print/paper.css(:s#css#woo#)
+woo/print/paper.css
 
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
+% echo css/print/paper.css(:gs#css#woo#)
+woo/print/paper.woo
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Works on Variables too!</h2>
+                        <p>Any variable can have alterations applied to it</p>
+                        <pre><code contenteditable>
+% a="Looks like a /path/to.me"
+% echo $a:h $a:t:r ${a:e}
+Looks like a /path to me
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Save Patterns for later</h2>
+                        <p>You can expand variables as if they were patterns</p>
+                        <p>This can be useful for building queries</p>
+                        <pre><code contenteditable>
+% a='*(.)'
+% ls $~a
+grunt.js  index.html  LICENSE  package.json  README.md
+                        </code></pre>
+                        <p><small>Remember to single quote the pattern to avoid early expansion!</small></p>
+                    </section>
+                </section>
 
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-
-							<section data-markdown>
-							  ## Markdown support
-
-							  For those of you who like that sort of thing.
-							  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-							</section>
-					</script>
-				</section>
-
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=cube#/transitions">Cube</a> -
-						<a href="?transition=page#/transitions">Page</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a> -
-						<a href="?transition=linear#/transitions">Linear</a> -
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?#/transitions">Default</a>
-					</p>
-				</section>
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						Reveal.js comes with a few themes built in: <br>
-						<a href="?theme=sky#/themes">Sky</a> -
-						<a href="?theme=beige#/themes">Beige</a> -
-						<a href="?theme=simple#/themes">Simple</a> -
-						<a href="?theme=serif#/themes">Serif</a> -
-						<a href="?theme=night#/themes">Night</a> -
-						<a href="?#/themes">Default</a>
-					</p>
-					<p>
-						<small>
-							* Theme demos are loaded after the presentation which leads to flicker. In production you should load your theme in the <code>&lt;head&gt;</code> using a <code>&lt;link&gt;</code>.
-						</small>
-					</p>
-				</section>
-
-				<section>
-					<section data-state="alert">
-						<h2>Global State</h2>
-						<p>
-							Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-							will be added as a class to the document element when the slide is open. This lets you
-							apply broader style changes, like switching the background.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-state="blackout">
-						<h2>"blackout"</h2>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-state="soothe">
-						<h2>"soothe"</h2>
-						<a href="#" class="image navigate-next">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(-90deg);">
-						</a>
-					</section>
-				</section>
-
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						The nice thing about standards is that there are so many to choose from</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
-					</blockquote>
-				</section>
-
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) ) {
-        node.className += ' roll';
-      }
-    };
-  }
+                <section>
+                    <section>
+                        <h2>Writing your own Matcher</h2>
+                        <p>If you need to match in a way not covered here...</p>
+                        <p>Or if you just want to use a more familiar tool</p>
+                    </section>
+                    <section>
+                        <h2>Inline Matcher</h2>
+                        <p><strong>e:'<span class="grey">CONDITION</span>':</strong></p>
+                        <p>Executes the condition as shell code.</p>
+                        <p>The current match to test is stored in <strong>$REPLY</strong></p>
+                        <pre><code contenteditable>
+% ls -d **/*(e:'[ $REPLY[1] = "j" ]':)
+js  js/reveal.js  js/reveal.min.js
+                        </code></pre>
+                        <p><small>Remember to single quote the condition to prevent early expansion!</small></p>
+                    </section>
+                    <section>
+                        <h2>Function Matcher</h2>
+                        <p><strong>+<span class="grey">FUNCTION NAME</span></strong></p>
+                        <p>Allows you to use a function for more complex conditions.</p>
+                        <p>If the function returns true then the current file will be matched.</p>
+                        <pre><code contenteditable>
+% function file_matcher () {
+    hash=$(openssl md5 $REPLY | cut -d' ' -f2)
+    [ $hash = "9dcf19ac58cdcf7952ae9444671b0fa6" ]
 }
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+% ls **/*(.+file_matcher)
+js/reveal.js
+                        </code></pre>
+                        <p><small>As you can see, you can apply other restrictions too!</small></p>
+                    </section>
+                    <section>
+                        <h2>Altering the Result</h2>
+                        <p>Assigning a new value to <strong>$REPLY</strong> will alter the matched file.</p>
+                        <p>But <strong>$reply</strong> is even better, as it can hold an array!</p>
+                        <pre><code contenteditable>
+% function file_doubler () {
+    reply=( $REPLY $REPLY ) # even assignment has a return value
+}
+% ls js/reveal.js(+file_doubler)
+js/reveal.js  js/reveal.js
+                        </code></pre>
+                        <p><small>You can also alter the result by applying the built in alterations after the matcher</small></p>
+                    </section>
+                </section>
 
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
-
-				<section>
-					<section>
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-					</section>
-				</section>
-
-				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
-				</section>
-
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					<script>
-						document.getElementById('slideshare').attributeName = 'allowfullscreen';
-					</script>
-				</section>
-
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press b or period on your keyboard to enter the 'paused' mode. This mode is helpful when you want to take distracting slides off the screen
-						during a presentation.
-					</p>
-				</section>
-
-				<section>
-					<h2>Stellar Links</h2>
-					<ul>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on GitHub</a></li>
-						<li><a href="http://hakim.se/projects/reveal-js">Leave feedback on my site</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>It's free</h2>
-					<p>
-						reveal.js and <a href="http://www.rvl.io">rvl.io</a> are entirely free but if you'd like to support the projects you can donate below.
-						Donations will go towards hosting and domain costs.
-					</p>
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-						<input type="hidden" name="cmd" value="_donations">
-						<input type="hidden" name="business" value="hakim.elhattab@gmail.com">
-						<input type="hidden" name="lc" value="US">
-						<input type="hidden" name="item_name" value="reveal.js / rvl.io">
-						<input type="hidden" name="no_note" value="0">
-						<input type="hidden" name="currency_code" value="USD">
-						<input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_LG.gif:NonHostedGuest">
-						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-					</form>
-				</section>
-
-				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
-				</section>
-
+                <section>
+                    <h1>The End</h1>
+                    <p>Add me on IM mattf@gapps.semantico.com</p>
+                    <p>Or mail me mattf@semantico.com</p>
+                    <p>If you need help!</p>
+                </section>
 			</div>
 
 		</div>
@@ -349,12 +250,12 @@ function linkify( selector ) {
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				controls: true,
-				progress: true,
+				progress: false,
 				history: true,
 				center: true,
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+				theme: Reveal.getQueryHash().theme || 'simple', // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
@@ -364,7 +265,6 @@ function linkify( selector ) {
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-					// { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
 
@@ -372,3 +272,4 @@ function linkify( selector ) {
 
 	</body>
 </html>
+<!-- vim: set ai et sw=4 syntax=html : -->
