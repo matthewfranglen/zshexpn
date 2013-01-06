@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+        <title>ZSH Expansion</title>
+
+		<meta name="description" content="ZSH Expansion is a capable search tool in the right hands">
+		<meta name="author" content="Matthew Franglen">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="css/custom.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+                <section>
+                    <h1>ZSH Expansion</h1>
+                    <h3>Make finding files easy</h3>
+                    <p><small>Created by Matthew Franglen</small></p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>What's the problem?</h2>
+                        <p>Bash has pattern expansion<p>
+                        <p class="fragment">except you can't search all folders...</p>
+                        <p class="fragment">and you can't exclude files from the results...</p>
+                        <p class="fragment">and you can't match by file attributes.</p>
+                    </section>
+                    <section>
+                        <h3>ZSH Expansion can do all that</h3>
+                        <p>In Bash, you end up using the find command.</p>
+                        <p>In ZSH, you don't have to!</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Basic Matching</h2>
+                        <p><strong>*</strong> will match any file or folder</p>
+                        <p><strong>?</strong> will match any single letter</p>
+                        <p><strong>[abc]</strong> will match any letter in the list</p>
+                    </section>
+                    <section>
+                        <h2>Recursive Matching</h2>
+                        <p><strong>**/</strong> will match any contained folder</p>
+                        <pre><code contenteditable>
+% ls -d **/
+css/        css/shaders/  css/theme/source/    js/   lib/css/   ...
+css/print/  css/theme/    css/theme/template/  lib/  lib/font/  ...
+                        </code></pre>
+                        <p><small>It really matches zero or more folders</small></p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Exclusion</h2>
+                        <p><strong>PATTERN~EXCLUSION</strong></p>
+                        <p>Anything matching the exclusion will not be returned</p>
+                        <pre><code contenteditable>
+% ls **/*.css~css/**/*.css
+css/print/paper.css  css/print/pdf.css
+css/reveal.css       css/reveal.min.css
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Exclude Results Not Folders</h2>
+                        <p>It just removes the individual excluded paths from the result</p>
+                    </section>
+                    <section>
+                        <h2>Multiple Exclusions Work</h2>
+                        <p>Just apply them one after the other</p>
+                        <pre><code contenteditable>
+% ls **/*.js~plugin/**/*.js~lib/**/*.js
+grunt.js  js/reveal.js  js/reveal.min.js
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>File Attributes</h2>
+                        <p><strong>PATTERN<span class="grey">~EXCLUSION</span>(ATTRIBUTES)</strong></p>
+                        <p>Allows you to restrict the match by things other than filename</p>
+                    </section>
+                    <section>
+                        <h2>File Type</h2>
+                        <p><strong>.</strong> will match only files</p>
+                        <p><strong>/</strong> will match only directories</p>
+                        <p><strong>@</strong> will match only symlinks</p>
+                        <p><strong>^</strong> will reverse the match</p>
+                        <pre><code contenteditable>
+% ls *(.)
+grunt.js  index.html  LICENSE  package.json  README.md
+
+% ls -d *(^.)
+css  js  lib  plugin
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Lots More!</h2>
+                        <p>You can match by file permissions...</p>
+                        <p>You can match by owner...</p>
+                        <p>You can match by modification date...</p>
+                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> for more!</p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Result Alteration</h2>
+                        <p><strong>PATTERN<span class="grey">~EXCLUSION</span>(<span class="grey">ATTRIBUTES</span>&nbsp;ALTERATIONS)</strong></p>
+                        <p>Allows you to alter the results to match your desired use</p>
+                    </section>
+                    <section>
+                        <h2>Path Parts</h2>
+                        <p><strong>:t</strong> will remove the leading directories from the path</p>
+                        <p><strong>:h</strong> will remove the last file or directory from the path</p>
+                        <p><strong>:e</strong> will remove everything but the file extension</p>
+                        <p><strong>:r</strong> will remove the file extension</p>
+                        <pre><code contenteditable>
+% echo index.html(:t) index.html(:h) index.html(:e) index.html(:r)
+index.html . html index
+
+% echo css/print/paper.css(:t:r)
+paper
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Substitution</h2>
+                        <p><strong>:s#<span class="grey">FIND</span>#<span class="grey">REPLACE</span>#</strong> will replace the first match</p>
+                        <p><strong>:gs#<span class="grey">FIND</span>#<span class="grey">REPLACE</span>#</strong> will replace all matches</p>
+                        <pre><code contenteditable>
+% echo css/print/paper.css(:s#css#woo#)
+woo/print/paper.css
+
+% echo css/print/paper.css(:gs#css#woo#)
+woo/print/paper.woo
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Works on Variables too!</h2>
+                        <p>Any variable can have alterations applied to it</p>
+                        <pre><code contenteditable>
+% a="Looks like a /path/to.me"
+% echo $a:h $a:t:r ${a:e}
+Looks like a /path to me
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Save Patterns for later</h2>
+                        <p>You can expand variables as if they were patterns</p>
+                        <p>This can be useful for building queries</p>
+                        <pre><code contenteditable>
+% a='*(.)'
+% ls $~a
+grunt.js  index.html  LICENSE  package.json  README.md
+                        </code></pre>
+                        <p><small>Remember to single quote the pattern to avoid early expansion!</small></p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Writing your own Matcher</h2>
+                        <p>If you need to match in a way not covered here...</p>
+                        <p>Or if you just want to use a more familiar tool</p>
+                    </section>
+                    <section>
+                        <h2>Inline Matcher</h2>
+                        <p><strong>e:'<span class="grey">CONDITION</span>':</strong></p>
+                        <p>Executes the condition as shell code.</p>
+                        <p>The current match to test is stored in <strong>$REPLY</strong></p>
+                        <pre><code contenteditable>
+% ls -d **/*(e:'[ $REPLY[1] = "j" ]':)
+js  js/reveal.js  js/reveal.min.js
+                        </code></pre>
+                        <p><small>Remember to single quote the condition to prevent early expansion!</small></p>
+                    </section>
+                    <section>
+                        <h2>Function Matcher</h2>
+                        <p><strong>+<span class="grey">FUNCTION NAME</span></strong></p>
+                        <p>Allows you to use a function for more complex conditions.</p>
+                        <p>If the function returns true then the current file will be matched.</p>
+                        <pre><code contenteditable>
+% function file_matcher () {
+    hash=$(openssl md5 $REPLY | cut -d' ' -f2)
+    [ $hash = "9dcf19ac58cdcf7952ae9444671b0fa6" ]
+}
+% ls **/*(.+file_matcher)
+js/reveal.js
+                        </code></pre>
+                        <p><small>As you can see, you can apply other restrictions too!</small></p>
+                    </section>
+                    <section>
+                        <h2>Altering the Result</h2>
+                        <p>Assigning a new value to <strong>$REPLY</strong> will alter the matched file.</p>
+                        <p>But <strong>$reply</strong> is even better, as it can hold an array!</p>
+                        <pre><code contenteditable>
+% function file_doubler () {
+    reply=( $REPLY $REPLY ) # even assignment has a return value
+}
+% ls js/reveal.js(+file_doubler)
+js/reveal.js  js/reveal.js
+                        </code></pre>
+                        <p><small>You can also alter the result by applying the built in alterations after the matcher</small></p>
+                    </section>
+                </section>
+
+                <section>
+                    <h1>The End</h1>
+                    <p>Add me on IM mattf@gapps.semantico.com</p>
+                    <p>Or mail me mattf@semantico.com</p>
+                    <p>If you need help!</p>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme || 'simple', // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
+<!-- vim: set ai et sw=4 syntax=html : -->
