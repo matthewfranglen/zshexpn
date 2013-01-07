@@ -38,7 +38,7 @@
 
                 <section>
                     <h1>ZSH Expansion</h1>
-                    <h3>Make finding files easy</h3>
+                    <h3>Easily find files</h3>
                     <p><small>Created by Matthew Franglen</small></p>
                 </section>
 
@@ -52,8 +52,8 @@
                     </section>
                     <section>
                         <h3>ZSH Expansion can do all that</h3>
-                        <p>In Bash, you end up using the find command.</p>
-                        <p>In ZSH, you don't have to!</p>
+                        <p>In Bash you end up using the find command.</p>
+                        <p>In ZSH you don't have to!</p>
                     </section>
                 </section>
 
@@ -82,9 +82,9 @@ css/print/  css/theme/    css/theme/template/  lib/  lib/font/  ...
                         <p><strong>PATTERN~EXCLUSION</strong></p>
                         <p>Anything matching the exclusion will not be returned</p>
                         <pre><code contenteditable>
-% ls **/*.css~css/**/*.css
-css/print/paper.css  css/print/pdf.css
-css/reveal.css       css/reveal.min.css
+% ls **/*.css~css/*/*.css
+css/custom.css      css/reveal.css
+css/reveal.min.css  lib/css/zenburn.css
                         </code></pre>
                     </section>
                     <section>
@@ -115,7 +115,7 @@ grunt.js  js/reveal.js  js/reveal.min.js
                         <p><strong>^</strong> will reverse the match</p>
                         <pre><code contenteditable>
 % ls *(.)
-grunt.js  index.html  LICENSE  package.json  README.md
+grunt.js  index.html  LICENSE  package.json  README.md ...
 
 % ls -d *(^.)
 css  js  lib  plugin
@@ -178,7 +178,7 @@ Looks like a /path to me
                         <pre><code contenteditable>
 % a='*(.)'
 % ls $~a
-grunt.js  index.html  LICENSE  package.json  README.md
+grunt.js  index.html  LICENSE  package.json  README.md ...
                         </code></pre>
                         <p><small>Remember to single quote the pattern to avoid early expansion!</small></p>
                     </section>
