@@ -82,9 +82,9 @@ css/print/  css/theme/    css/theme/template/  lib/  lib/font/  ...
                         <p><strong>PATTERN~EXCLUSION</strong></p>
                         <p>Anything matching the exclusion will not be returned</p>
                         <pre><code contenteditable>
-% ls **/*.css~css/**/*.css
-css/print/paper.css  css/print/pdf.css
-css/reveal.css       css/reveal.min.css
+% ls **/*.css~css/*/*.css
+css/custom.css      css/reveal.css
+css/reveal.min.css  lib/css/zenburn.css
                         </code></pre>
                     </section>
                     <section>
@@ -115,7 +115,7 @@ grunt.js  js/reveal.js  js/reveal.min.js
                         <p><strong>^</strong> will reverse the match</p>
                         <pre><code contenteditable>
 % ls *(.)
-grunt.js  index.html  LICENSE  package.json  README.md
+grunt.js  index.html  LICENSE  package.json  README.md ...
 
 % ls -d *(^.)
 css  js  lib  plugin
@@ -178,7 +178,7 @@ Looks like a /path to me
                         <pre><code contenteditable>
 % a='*(.)'
 % ls $~a
-grunt.js  index.html  LICENSE  package.json  README.md
+grunt.js  index.html  LICENSE  package.json  README.md ...
                         </code></pre>
                         <p><small>Remember to single quote the pattern to avoid early expansion!</small></p>
                     </section>
