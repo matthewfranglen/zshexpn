@@ -82,9 +82,11 @@ css/print/  css/theme/    css/theme/template/  lib/  lib/font/  ...
                         <p><strong>PATTERN~EXCLUSION</strong></p>
                         <p>Anything matching the exclusion will not be returned</p>
                         <pre><code contenteditable>
-% ls **/*.css~css/*/*.css
-css/custom.css      css/reveal.css
-css/reveal.min.css  lib/css/zenburn.css
+% ls *.*
+grunt.js  index.html  package.json  README.md  REVEAL.md
+
+% ls *.*~*.md
+grunt.js  index.html  package.json
                         </code></pre>
                     </section>
                     <section>
@@ -126,7 +128,7 @@ css  js  lib  plugin
                         <p>You can match by file permissions...</p>
                         <p>You can match by owner...</p>
                         <p>You can match by modification date...</p>
-                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> for more!</p>
+                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> Glob Qualifiers section for more!</p>
                     </section>
                 </section>
 
@@ -186,8 +188,35 @@ grunt.js  index.html  LICENSE  package.json  README.md ...
 
                 <section>
                     <section>
+                        <h2>Changing Text Matching</h2>
+                        <p><strong>(#<span class="grey">FLAG</span>)</strong></p>
+                        <p>Globbing Flags change the way text in your pattern matches files.</p>
+                        <p>They can be placed anywhere in a pattern and take effect from that point on.</p>
+                    </section>
+                    <section>
+                        <h2>Fuzzy Matching</h2>
+                        <p><strong>(#a<span class="grey">FACTOR</span>)</strong></p>
+                        <p>Much like many search engines, you can apply a fuzz factor to your pattern.</p>
+                        <p>The factor allows for letter replacement, swapping, addition, and removal.</p>
+                        <pre><code contenteditable>
+% ls (#a1)gwunt.js (#a3)git.js
+grunt.js  grunt.js
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Case Insensitive Matching</h2>
+                        <p><strong>(#i)</strong></p>
+                        <pre><code contenteditable>
+% ls (#i)readme.MD
+README.md
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
                         <h2>Writing your own Matcher</h2>
-                        <p>If you need to match in a way not covered here...</p>
+                        <p>If you need to match in a way not covered here,</p>
                         <p>Or if you just want to use a more familiar tool</p>
                     </section>
                     <section>
@@ -196,8 +225,8 @@ grunt.js  index.html  LICENSE  package.json  README.md ...
                         <p>Executes the condition as shell code.</p>
                         <p>The current match to test is stored in <strong>$REPLY</strong></p>
                         <pre><code contenteditable>
-% ls -d **/*(e:'[ $REPLY[1] = "j" ]':)
-js  js/reveal.js  js/reveal.min.js
+% ls **/*(e:'[ $(mimetype -b $REPLY) = "text/x-markdown" ]':)
+css/theme/README.md  README.md  REVEAL.md
                         </code></pre>
                         <p><small>Remember to single quote the condition to prevent early expansion!</small></p>
                     </section>
@@ -218,7 +247,7 @@ js/reveal.js
                     </section>
                     <section>
                         <h2>Altering the Result</h2>
-                        <p>Assigning a new value to <strong>$REPLY</strong> will alter the matched file.</p>
+                        <p>Assigning a new value to <strong>$REPLY</strong> will change the matched file.</p>
                         <p>But <strong>$reply</strong> is even better, as it can hold an array!</p>
                         <pre><code contenteditable>
 % function file_doubler () {
@@ -227,7 +256,7 @@ js/reveal.js
 % ls js/reveal.js(+file_doubler)
 js/reveal.js  js/reveal.js
                         </code></pre>
-                        <p><small>You can also alter the result by applying the built in alterations after the matcher</small></p>
+                        <p><small>You can also change the result by applying the built in alterations after the matcher</small></p>
                     </section>
                 </section>
 
