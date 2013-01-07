@@ -128,7 +128,7 @@ css  js  lib  plugin
                         <p>You can match by file permissions...</p>
                         <p>You can match by owner...</p>
                         <p>You can match by modification date...</p>
-                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> for more!</p>
+                        <p>Check the <a href="http://linux.die.net/man/1/zshexpn">zshexpn manual</a> Glob Qualifiers section for more!</p>
                     </section>
                 </section>
 
@@ -225,8 +225,8 @@ README.md
                         <p>Executes the condition as shell code.</p>
                         <p>The current match to test is stored in <strong>$REPLY</strong></p>
                         <pre><code contenteditable>
-% ls -d **/*(e:'[ $REPLY[1] = "j" ]':)
-js  js/reveal.js  js/reveal.min.js
+% ls **/*(e:'[ $(mimetype -b $REPLY) = "text/x-markdown" ]':)
+css/theme/README.md  README.md  REVEAL.md
                         </code></pre>
                         <p><small>Remember to single quote the condition to prevent early expansion!</small></p>
                     </section>
@@ -247,7 +247,7 @@ js/reveal.js
                     </section>
                     <section>
                         <h2>Altering the Result</h2>
-                        <p>Assigning a new value to <strong>$REPLY</strong> will alter the matched file.</p>
+                        <p>Assigning a new value to <strong>$REPLY</strong> will change the matched file.</p>
                         <p>But <strong>$reply</strong> is even better, as it can hold an array!</p>
                         <pre><code contenteditable>
 % function file_doubler () {
@@ -256,7 +256,7 @@ js/reveal.js
 % ls js/reveal.js(+file_doubler)
 js/reveal.js  js/reveal.js
                         </code></pre>
-                        <p><small>You can also alter the result by applying the built in alterations after the matcher</small></p>
+                        <p><small>You can also change the result by applying the built in alterations after the matcher</small></p>
                     </section>
                 </section>
 
