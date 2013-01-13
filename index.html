@@ -51,9 +51,15 @@
                         <p class="fragment">and you can't match by file attributes.</p>
                     </section>
                     <section>
-                        <h3>ZSH Expansion can do all that</h3>
+                        <h2>ZSH Expansion can do that</h2>
                         <p>In Bash you end up using the find command.</p>
                         <p>In ZSH you don't have to!</p>
+                    </section>
+                    <section>
+                        <h2>Extended Globbing</h2>
+                        <p><strong>setopt extended_glob</strong></p>
+                        <p>Most of the patterns in this talk require extended globbing</p>
+                        <p>Set this in your .zshrc!</p>
                     </section>
                 </section>
 
@@ -206,9 +212,13 @@ grunt.js  grunt.js
                     <section>
                         <h2>Case Insensitive Matching</h2>
                         <p><strong>(#i)</strong></p>
+                        <p>You can apply Globbing Flags to part of a pattern using brackets.</p>
                         <pre><code contenteditable>
 % ls (#i)readme.MD
 README.md
+
+% ls ((#i)readme).MD
+zsh: no matches found: ((#i)readme).MD
                         </code></pre>
                     </section>
                 </section>
