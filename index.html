@@ -206,9 +206,13 @@ grunt.js  grunt.js
                     <section>
                         <h2>Case Insensitive Matching</h2>
                         <p><strong>(#i)</strong></p>
+                        <p>You can apply Globbing Flags to part of a pattern using brackets.</p>
                         <pre><code contenteditable>
 % ls (#i)readme.MD
 README.md
+
+% ls ((#i)readme).MD
+zsh: no matches found: ((#i)readme).MD
                         </code></pre>
                     </section>
                 </section>
